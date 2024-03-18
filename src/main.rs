@@ -23,6 +23,20 @@ impl ErrorMessage {
     }
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(crate = "rocket::serde")]
+struct SensitiveResponse {
+    response: String
+}
+
+impl SensitiveResponse {
+    pub fn new(message: &str) -> Self {
+        Self {
+            response: message.to_string()
+        }
+    }
+}
+
 struct ApiKey {
     key: String,
 }
@@ -74,7 +88,7 @@ fn index() -> &'static str {
 #[get("/sensitive")]
 fn sensitive(guard: Result<ApiKey, ErrorMessage>) -> (Status, json::Value) {
     match guard {
-        Result::Ok(key) => (Status::Ok, json!("{ \"response\": \"Cool, cool cool\" }")),
+        Result::Ok(key) => (Status::Ok, json!(SensitiveResponse::new("cool, cool, cool"))),
         Result::Err(e) => (Status::Unauthorized, json!(e)),
     }
 }

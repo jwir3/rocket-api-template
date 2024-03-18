@@ -1,2 +1,2 @@
-# green-jungle
-A service for computing differences between images in Rust
+# rocket-api-template
+A template repository for generating REST APIs using Rocket.
